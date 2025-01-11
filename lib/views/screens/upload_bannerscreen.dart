@@ -136,26 +136,39 @@ class _UploadBannerscreenState extends State<UploadBannerscreen> {
   }
 
   // Method to upload the image to Firebase Storage
-  Future<void> uploadImage() async {
-    if (_image != null && fileName != null) {
+  // Future<void> uploadImage() async {
+  //   if (_image != null && fileName != null) {
+  //     Reference ref = _storage.ref().child('Banners').child(fileName!);
+  //     UploadTask uploadTask = ref.putData(_image);
+
+  //     TaskSnapshot snapshot = await uploadTask;
+  //     String downloadUrl = await snapshot.ref.getDownloadURL();
+  //     print("Download URL: $downloadUrl"); // Log or use the download URL
+  //   } else {
+  //     print("No image selected");
+  //   }
+  // }
+
+ _uploadBannersToStorage(dynamic image) async {
+
       Reference ref = _storage.ref().child('Banners').child(fileName!);
-      UploadTask uploadTask = ref.putData(_image);
+      UploadTask uploadTask = ref.putData(image);
 
       TaskSnapshot snapshot = await uploadTask;
       String downloadUrl = await snapshot.ref.getDownloadURL();
-      print("Download URL: $downloadUrl"); // Log or use the download URL
-    } else {
-      print("No image selected");
-    }
+      print("Download URL: $downloadUrl");
+      return downloadUrl;
+    
   }
-uploadToFirebaseStore() async{
+uploadToFireStore() async{
   EasyLoading.show();
   if(_image!=null){
    String imageUrl=await  _uploadBannersToStorage(_image);
 
    await _firestore.collection('banners').doc(fileName).set({
     'image': imageUrl,
-   }).whenComplete((){
+   })
+   .whenComplete((){
     EasyLoading.dismiss();
     setState(() {
       _image = null;
@@ -212,7 +225,9 @@ uploadToFirebaseStore() async{
                       style: ElevatedButton.styleFrom(
                         shadowColor: Colors.yellow.shade900,
                       ),
-                      onPressed: pickImage,
+                      onPressed:(){
+                        pickImage();
+                      } ,
                       child: Text('Upload Image'),
                     ),
                   ],
@@ -224,7 +239,7 @@ uploadToFirebaseStore() async{
                   shadowColor: Colors.yellow.shade900,
                 ),
                 onPressed: (){
-                  uploadToFirebaseStore();
+                  uploadToFireStore();
                 },
                 child: Text("Save"),
               ),
@@ -249,5 +264,4 @@ uploadToFirebaseStore() async{
     );
   }
   
-  _uploadBannersToStorage(image) {}
 }

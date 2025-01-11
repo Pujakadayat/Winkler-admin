@@ -1,51 +1,203 @@
+// import 'package:flutter/material.dart';
+
+// class OrderScreen extends StatelessWidget {
+// static const String routeName= '\OrderScreen';
+
+// Widget _rowHeader(String text,int flex){
+//   return Expanded(
+//     flex: flex,
+//     child: Container(
+// decoration: BoxDecoration(
+//   border:Border.all(color:Colors.grey.shade700),
+// color:Colors.yellow.shade900),
+//   child: Padding(
+//     padding: const EdgeInsets.all(8.0),
+//     child: Text(text,style: TextStyle(
+//       color:Colors.white,
+//       fontWeight: FontWeight.bold
+//     ),),
+//   ),
+//   ),
+//   );
+// }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//         child: Column(
+//           children: [
+//             Container(
+//               alignment: Alignment.topLeft,
+//               padding: const EdgeInsets.all(10),
+//               child: const Text(
+//                 'Orders',
+//                 style: TextStyle(
+//                   fontWeight: FontWeight.w700,
+//                   fontSize: 36,
+//                 ),
+//               ),
+//             ),
+//              Row(children: [
+//               _rowHeader('IMAGE', 1),
+//               _rowHeader('FULL NAME', 3),
+//               _rowHeader('CITY', 2),
+//               _rowHeader('STATE', 2),
+//               _rowHeader('VIEW MORE', 1),
+//             ],)
+//           ],
+//         ),
+//         );
+//   }
+// }
+
 import 'package:flutter/material.dart';
 
-class OrderScreen extends StatelessWidget {
-static const String routeName= '\OrderScreen';
+// class OrderScreen extends StatefulWidget {
+//   static const String routeName = '\orderScreen';
 
-Widget _rowHeader(String text,int flex){
-  return Expanded(
-    flex: flex,
-    child: Container(
-decoration: BoxDecoration(
-  border:Border.all(color:Colors.grey.shade700),
-color:Colors.yellow.shade900),
-  child: Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Text(text,style: TextStyle(
-      color:Colors.white,
-      fontWeight: FontWeight.bold
-    ),),
-  ),
-  ),
-  );
+//   @override
+//   State<OrderScreen> createState() => _OrderScreenState();
+// }
+
+// class _OrderScreenState extends State<OrderScreen> {
+//   Widget _rowHeader(int flex, String text) {
+//     return Expanded(
+//         flex: flex,
+//         child: Container(
+//           decoration: BoxDecoration(
+//             border: Border.all(color: Colors.grey.shade700),
+//             color: const Color(0xFF3C55EF),
+//           ),
+//           child: Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Text(
+//               text,
+//               style: TextStyle(
+//                 color: Colors.white,
+//                 fontSize: 14,
+//               ),
+//             ),
+//           ),
+//         ));
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: SingleChildScrollView(
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Container(
+//                 alignment: Alignment.topLeft,
+//                 child: Row(
+//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                   children: [
+//                     Text(
+//                       'Manage Orders',
+//                       style: TextStyle(
+//                         fontSize: 22,
+//                         fontWeight: FontWeight.w700,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               SizedBox(
+//                 height: 15,
+//               ),
+//               Row(
+//                 children: [
+//                   _rowHeader(1, 'Image'),
+//                   _rowHeader(3, 'Full Name '),
+//                   _rowHeader(2, 'Address'),
+//                   _rowHeader(1, 'ACTION'),
+//                   _rowHeader(1, 'VIEW MORE'),
+//                 ],
+//               ),
+//               OrderWidget(),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+
+class OrderScreen extends StatefulWidget {
+  static const String routeName = '\orderScreen';
+
+  @override
+  State<OrderScreen> createState() => _OrderScreenState();
 }
+
+class _OrderScreenState extends State<OrderScreen> {
+  Widget _rowHeader(int flex, String text) {
+    return Expanded(
+        flex: flex,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade700),
+            color: const Color(0xFF3C55EF),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.topLeft,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Orders',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 36,
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Manage Orders',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-             Row(children: [
-              _rowHeader('IMAGE', 1),
-              _rowHeader('FULL NAME', 3),
-              _rowHeader('CITY', 2),
-              _rowHeader('STATE', 2),
-              _rowHeader('VIEW MORE', 1),
-            ],)
-          ],
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                children: [
+                  _rowHeader(1, 'Image'),
+                  _rowHeader(3, 'Full Name '),
+                  _rowHeader(2, 'Address'),
+                  _rowHeader(1, 'ACTION'),
+                  _rowHeader(1, 'VIEW MORE'),
+                ],
+              ),
+              // OrdersWidget(),
+            ],
+          ),
         ),
-        );
+      ),
+    );
   }
 }
