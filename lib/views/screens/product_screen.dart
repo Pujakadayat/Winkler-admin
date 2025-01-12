@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // class ProductScreen extends StatelessWidget {
@@ -121,45 +122,88 @@ class _ProductUploadPageState extends State<ProductUploadPage> {
   bool _isUploading = false;
 
 // upload data to cloud
-  uploadData() async {
-    setState(() {
-      _isUploading = true;
-    });
+  // uploadData() async {
+  //   setState(() {
+  //     _isUploading = true;
+  //   });
 
-    // Check if there are processed images in the imagesUrl list
-    if (imagesUrl.isNotEmpty) {
-      final productId = Uuid().v4();
+  //   // Check if there are processed images in the imagesUrl list
+  //   if (imagesUrl.isNotEmpty) {
+  //     final productId = Uuid().v4();
 
-      await _firestore.collection('products').doc(productId).set({
-        'productId': productId,
-        'category': _selectedCategory,
-        'productSize': _sizeList,
-        'productName': prouctName,
-        'price': price,
-        'discountPrice': discountPrice,
-        'description': description,
-        'productImages': imagesUrl,
-        "salesCount": 0,
-        'totalReviews': 0,
-        'popular': false,
-        'recommened': true,
-      }).whenComplete(() {
-        _formKey.currentState!.reset();
-        imagesUrl.clear();
-        setState(() {
-          _isUploading = false;
-        });
-      });
-    } else {
-      // Handle the case where there are no processed images
+  //     await _firestore.collection('products').doc(productId).set({
+  //       'productId': productId,
+  //       'category': _selectedCategory,
+  //       'productSize': _sizeList,
+  //       'productName': prouctName,
+  //       'price': price,
+  //       'discountPrice': discountPrice,
+  //       'description': description,
+  //       'productImages': imagesUrl,
+  //       "salesCount": 0,
+  //       'totalReviews': 0,
+  //       'popular': false,
+  //       'recommened': true,
+  //     }).whenComplete(() {
+  //       _formKey.currentState!.reset();
+  //       imagesUrl.clear();
+  //       setState(() {
+  //         _isUploading = false;
+  //       });
+  //     });
+  //   } else {
+  //     // Handle the case where there are no processed images
+  //     setState(() {
+  //       _isUploading = false;
+  //     });
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //         content:
+  //             Text('No processed images to upload. Please select an image')));
+  //   }
+  // }
+uploadData() async {
+  setState(() {
+    _isUploading = true;
+  });
+
+  // Check if there are processed images in the imagesUrl list
+  if (imagesUrl.isNotEmpty) {
+    final productId = Uuid().v4();
+
+    // Get the current user's UID (admin ID)
+    User? user = FirebaseAuth.instance.currentUser;
+    String adminID = user != null ? user.uid : ''; // Fetch admin ID
+
+    await _firestore.collection('products').doc(productId).set({
+      'productId': productId,
+      'category': _selectedCategory,
+      'productSize': _sizeList,
+      'productName': prouctName,
+      'price': price,
+      'discountPrice': discountPrice,
+      'description': description,
+      'productImages': imagesUrl,
+      "salesCount": 0,
+      'totalReviews': 0,
+      'popular': false,
+      'recommened': true,
+      'adminID': adminID, // Store the admin ID
+    }).whenComplete(() {
+      _formKey.currentState!.reset();
+      imagesUrl.clear();
       setState(() {
         _isUploading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content:
-              Text('No processed images to upload. Please select an image')));
-    }
+    });
+  } else {
+    // Handle the case where there are no processed images
+    setState(() {
+      _isUploading = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('No processed images to upload. Please select an image')));
   }
+}
 
   bool _isRemovingBackground = false; // Add this flag
 

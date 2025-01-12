@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:multi_vendor_admin/views/authentication/loginscreen.dart';
 import 'package:multi_vendor_admin/views/screens/main_screen.dart';
 
 void main()  async{
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:MainScreen(),
+      // home:MainScreen(),
+      home:LoginScreen(),
          builder: EasyLoading.init(),
     );
   }

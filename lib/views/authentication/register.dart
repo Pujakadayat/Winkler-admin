@@ -12,12 +12,12 @@ import 'package:multi_vendor_admin/views/authentication/showsnackbar.dart';
 import 'package:multi_vendor_admin/views/screens/main_screen.dart';
 
 
-class BuyerRegisterScreen extends StatefulWidget {
+class AdminRegisterScreen extends StatefulWidget {
   @override
-  State<BuyerRegisterScreen> createState() => _BuyerRegisterScreenState();
+  State<AdminRegisterScreen> createState() => _AdminRegisterScreenState();
 }
 
-class _BuyerRegisterScreenState extends State<BuyerRegisterScreen> {
+class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
   final AuthController _authController = AuthController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
