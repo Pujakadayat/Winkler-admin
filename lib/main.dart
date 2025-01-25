@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home:MainScreen(),
-      home:LoginScreen(),
+    //  home:MainScreen(),
+     home:LoginScreen(),
          builder: EasyLoading.init(),
     );
   }

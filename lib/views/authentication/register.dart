@@ -6,10 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:multi_vendor_admin/views/authentication/authcontroller.dart';
-import 'package:multi_vendor_admin/views/authentication/biometric.dart';
+
 import 'package:multi_vendor_admin/views/authentication/loginscreen.dart';
 import 'package:multi_vendor_admin/views/authentication/showsnackbar.dart';
 import 'package:multi_vendor_admin/views/screens/main_screen.dart';
+
+
 
 
 class AdminRegisterScreen extends StatefulWidget {
@@ -27,110 +29,28 @@ class _AdminRegisterScreenState extends State<AdminRegisterScreen> {
   late String password;
   bool _isLoading = false;
   Uint8List? _image;
-
-  //  Future<void> _signUpUser() async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-
-  //   if (_formKey.currentState!.validate()) {
-  //     await _authController.signUpUsers(
-  //         email, fullName, phoneNumber, password, _image).whenComplete(() {
-  //       setState(() {
-  //         _formKey.currentState?.reset();
-  //         _isLoading = false;
-  //       });
-
-  //       // Ask the user if they want to set up biometric authentication
-  //       showDialog(
-  //         context: context,
-  //         builder: (context) => AlertDialog(
-  //           title: Text('Set up Biometric Authentication'),
-  //           content: Text('Would you like to set up biometric authentication now?'),
-  //           actions: [
-  //             TextButton(
-  //               onPressed: () {
-  //                 Navigator.push(
-  //                   context,
-  //                   MaterialPageRoute(builder: (context) => Biometric()),
-  //                 );
-  //               },
-  //               child: Text('Yes'),
-  //             ),
-  //             TextButton(
-  //               onPressed: () {
-  //                 // Proceed directly to the main screen if they choose not to set up biometric
-  //                 Navigator.pushReplacement(
-  //                   context,
-  //                   MaterialPageRoute(builder: (context) => MainScreen()),
-  //                 );
-  //               },
-  //               child: Text('No'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     });
-
-  //     showSnack(context, 'Congratulations! Account has been created');
-  //   } else {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //     showSnack(context, 'Please fill out all fields');
-  //   }
-  // }
-
-
 Future<void> _signUpUser() async {
   setState(() {
     _isLoading = true;
   });
 
   if (_formKey.currentState!.validate()) {
-    await _authController
-        .signUpUsers(email, fullName, phoneNumber, password, _image)
-        .whenComplete(() async {
-      setState(() {
-        _formKey.currentState?.reset();
-        _isLoading = false;
-      });
-
-      // Send confirmation email
-      await sendConfirmationEmail(email, fullName);
-
-      // Ask the user if they want to set up biometric authentication
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Set up Biometric Authentication'),
-          content: Text('Would you like to set up biometric authentication now?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Biometric()),
-                );
-              },
-              child: Text('Yes'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Proceed directly to the main screen if they choose not to set up biometric
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => MainScreen()),
-                );
-              },
-              child: Text('No'),
-            ),
-          ],
-        ),
-      );
-
-      showSnack(context, 'Congratulations! Account has been created');
+    String result = await _authController
+        .signUpUsers(email, fullName, phoneNumber, password, _image);
+    setState(() {
+      _isLoading = false;
     });
+
+    if (result == 'success') {
+      // Navigate to the main screen
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+
+      // // Optional: Show success message
+      // showSnack(context, 'Congratulations! Account has been created');
+    } else {
+      // Registration failed, show error message
+      showSnack(context, result);
+    }
   } else {
     setState(() {
       _isLoading = false;
@@ -139,34 +59,36 @@ Future<void> _signUpUser() async {
   }
 }
 
-Future<void> sendConfirmationEmail(String recipientEmail, String fullName) async {
-  final smtpServer = gmail('pujakadayat1@gmail.com', 'your-email-password'); // Replace with your credentials
+  // Future<void> _signUpUser() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
 
-  final message = Message()
-    ..from = Address('your-email@gmail.com', 'Your App Name') // Replace with your email
-    ..recipients.add(recipientEmail)
-    ..subject = 'Registration Successful'
-    ..text = 'Dear $fullName,\n\n'
-        'Thank you for registering with us. Your account has been successfully created.\n\n'
-        'Best Regards,\nYour App Name Team';
+  //   if (_formKey.currentState!.validate()) {
+  //     String result = await _authController
+  //         .signUpUsers(email, fullName, phoneNumber, password, _image);
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
 
-  try {
-    final sendReport = await send(message, smtpServer);
-    print('Message sent: ' + sendReport.toString());
-  } catch (e) {
-    print('Error sending email: $e');
-  }
-}
+  //     if (result == 'success') {
+  //          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+
+  //       showSnack(context, 'Congratulations! Account has been created');
+  //     } else {
+  //       // Registration failed
+  //       showSnack(context, result);
+  //     }
+  //   } else {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //     showSnack(context, 'Please fill out all fields');
+  //   }
+  // }
 
   Future<void> selectGalleryImage() async {
-    Uint8List im = await _authController.pickProfileImage(ImageSource.gallery);
-    setState(() {
-      _image = im;
-    });
-  }
-
-  Future<void> selectCameraImage() async {
-    Uint8List im = await _authController.pickProfileImage(ImageSource.camera);
+    Uint8List? im = await _authController.pickProfileImage(ImageSource.gallery);
     setState(() {
       _image = im;
     });
@@ -191,8 +113,7 @@ Future<void> sendConfirmationEmail(String recipientEmail, String fullName) async
                     _image != null
                         ? CircleAvatar(
                             radius: 64,
-                            backgroundColor:
-                                const Color.fromARGB(255, 13, 62, 86),
+                            backgroundColor: Colors.grey,
                             backgroundImage: MemoryImage(_image!),
                           )
                         : CircleAvatar(
@@ -214,15 +135,9 @@ Future<void> sendConfirmationEmail(String recipientEmail, String fullName) async
                 Padding(
                   padding: const EdgeInsets.all(13.0),
                   child: TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please Email must not be empty';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      email = value;
-                    },
+                    validator: (value) =>
+                        value!.isEmpty ? 'Email must not be empty' : null,
+                    onChanged: (value) => email = value,
                     decoration: InputDecoration(
                       labelText: 'Enter Email',
                     ),
@@ -231,15 +146,9 @@ Future<void> sendConfirmationEmail(String recipientEmail, String fullName) async
                 Padding(
                   padding: const EdgeInsets.all(13.0),
                   child: TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please Fullname must not be empty';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      fullName = value;
-                    },
+                    validator: (value) =>
+                        value!.isEmpty ? 'Full Name must not be empty' : null,
+                    onChanged: (value) => fullName = value,
                     decoration: InputDecoration(
                       labelText: 'Enter Full Name',
                     ),
@@ -248,15 +157,10 @@ Future<void> sendConfirmationEmail(String recipientEmail, String fullName) async
                 Padding(
                   padding: const EdgeInsets.all(13.0),
                   child: TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please Phone number must not be empty';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      phoneNumber = value;
-                    },
+                    validator: (value) => value!.isEmpty
+                        ? 'Phone Number must not be empty'
+                        : null,
+                    onChanged: (value) => phoneNumber = value,
                     decoration: InputDecoration(
                       labelText: 'Enter Phone Number',
                     ),
@@ -266,15 +170,9 @@ Future<void> sendConfirmationEmail(String recipientEmail, String fullName) async
                   padding: const EdgeInsets.all(13.0),
                   child: TextFormField(
                     obscureText: true,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please password must not be empty';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      password = value;
-                    },
+                    validator: (value) =>
+                        value!.isEmpty ? 'Password must not be empty' : null,
+                    onChanged: (value) => password = value,
                     decoration: InputDecoration(
                       labelText: 'Enter Password',
                     ),
@@ -286,27 +184,25 @@ Future<void> sendConfirmationEmail(String recipientEmail, String fullName) async
                     width: MediaQuery.of(context).size.width - 40,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 13, 62, 86),
+                      color: Colors.blue,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(
                       child: _isLoading
-                          ? CircularProgressIndicator(
-                              color: Colors.white,
-                            )
+                          ? CircularProgressIndicator(color: Colors.white)
                           : Text(
                               "Register",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 19,
                                 fontWeight: FontWeight.bold,
-                                letterSpacing: 4,
                               ),
                             ),
+                            
                     ),
                   ),
                 ),
-                Row(
+                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Already Have An Account?'),
@@ -315,17 +211,22 @@ Future<void> sendConfirmationEmail(String recipientEmail, String fullName) async
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return LoginScreen();
-                        }));
+                        }
+                        )
+                        );
                       },
                       child: Text('Login'),
                     ),
-                  ],
-                )
               ],
             ),
+          ]
           ),
         ),
       ),
-    );
+    ));
   }
- }
+
+  void showSnack(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+}

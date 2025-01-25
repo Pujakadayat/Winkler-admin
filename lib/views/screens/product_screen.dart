@@ -334,250 +334,254 @@ uploadData() async {
             padding: const EdgeInsets.all(16.0),
             child: Form(
               key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Product Information',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Product Information',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 16),
-                  buildInputField(
-                    'Product Name',
-                    TextInputType.text,
-                    (value) {
-                      prouctName = value;
-                    },
-                    (value) {
-                      if (value!.isEmpty) {
-                        return "Please enter a product name";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: buildInputField(
-                          'Price',
-                          TextInputType.number,
-                          (value) {
-                            price = double.parse(value);
-                          },
-                          (value) {
-                            if (value!.isEmpty) {
-                              return "Please enter a price";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: buildDropdownField('Category'),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                  buildInputField(
-                    'Discount Price',
-                    TextInputType.number,
-                    (value) {
-                      discountPrice = int.parse(value);
-                    },
-                    (value) {
-                      if (value!.isEmpty) {
-                        return "Please enter a discount price";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  buildInputField('Description', TextInputType.multiline,
+                    SizedBox(height: 16),
+                    buildInputField(
+                      'Product Name',
+                      TextInputType.text,
                       (value) {
-                    description = value;
-                  }, (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter a description";
-                    } else {
-                      return null;
-                    }
-                  }, maxLines: 3),
-                  SizedBox(height: 16),
-                  // Product Sizes
-
-                  if (_selectedCategory != "Electronics")
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Flexible(
-                          child: Container(
-                            child: TextFormField(
-                              controller: _sizeController,
-                              onChanged: (value) {
-                                setState(() {
-                                  _entered = true;
-                                });
+                        prouctName = value;
+                      },
+                      (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter a product name";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    SingleChildScrollView(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: buildInputField(
+                              'Price',
+                              TextInputType.number,
+                              (value) {
+                                price = double.parse(value);
                               },
-                              decoration: InputDecoration(
-                                labelText: 'Add Size',
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 8.0),
-                              ),
-                              keyboardType: TextInputType.text,
-                              maxLines: 3,
+                              (value) {
+                                if (value!.isEmpty) {
+                                  return "Please enter a price";
+                                } else {
+                                  return null;
+                                }
+                              },
                             ),
                           ),
-                        ),
-                        _entered == true
-                            ? ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue.shade900,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _sizeList.add(_sizeController.text);
-                                    _sizeController.clear();
-                                    _entered = false;
-                                  });
-                                },
-                                child: Text(
-                                  'Add',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                            : Text(''),
-                      ],
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: buildDropdownField('Category'),
+                          ),
+                        ],
+                      ),
                     ),
-                  if (_sizeList.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 50,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: _sizeList.length,
-                          itemBuilder: ((context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: InkWell(
-                                onTap: () {
+                    SizedBox(height: 16),
+                    buildInputField(
+                      'Discount Price',
+                      TextInputType.number,
+                      (value) {
+                        discountPrice = int.parse(value);
+                      },
+                      (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter a discount price";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    buildInputField('Description', TextInputType.multiline,
+                        (value) {
+                      description = value;
+                    }, (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter a description";
+                      } else {
+                        return null;
+                      }
+                    }, maxLines: 3),
+                    SizedBox(height: 16),
+                    // Product Sizes
+                
+                    if (_selectedCategory != "Electronics")
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Flexible(
+                            child: Container(
+                              child: TextFormField(
+                                controller: _sizeController,
+                                onChanged: (value) {
                                   setState(() {
-                                    _sizeList.removeAt(index);
+                                    _entered = true;
                                   });
                                 },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.blue.shade800,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      _sizeList[index],
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                                decoration: InputDecoration(
+                                  labelText: 'Add Size',
+                                  filled: true,
+                                  fillColor: Colors.grey[200],
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
+                                ),
+                                keyboardType: TextInputType.text,
+                                maxLines: 3,
+                              ),
+                            ),
+                          ),
+                          _entered == true
+                              ? ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue.shade900,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _sizeList.add(_sizeController.text);
+                                      _sizeController.clear();
+                                      _entered = false;
+                                    });
+                                  },
+                                  child: Text(
+                                    'Add',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : Text(''),
+                        ],
+                      ),
+                    if (_sizeList.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _sizeList.length,
+                            itemBuilder: ((context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _sizeList.removeAt(index);
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.blue.shade800,
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        _sizeList[index],
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                    ),
-                  if (_sizeList.isNotEmpty)
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _isSave = true;
-                        });
-                      },
-                      child: Text(
-                        _isSave ? 'Saved' : 'Save',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 3,
-                        ),
-                      ),
-                    ),
-                  SizedBox(height: 32),
-                  Container(
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: images.length + 1,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 15,
-                        crossAxisSpacing: 15,
-                        childAspectRatio: 1,
-                      ),
-                      itemBuilder: ((context, index) {
-                        return index == 0
-                            ? Center(
-                                child: _isRemovingBackground
-                                    ? CircularProgressIndicator()
-                                    : IconButton(
-                                        onPressed: pickImage,
-                                        icon: Icon(Icons.add),
-                                      ),
-                              )
-                            : Image.memory(
-                                images[index - 1],
-                                fit: BoxFit.cover,
                               );
-                      }),
-                    ),
-                  ),
-                  SizedBox(height: 32),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await uploadData();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Fields must not be empty')));
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                            }),
+                          ),
+                        ),
+                      ),
+                    if (_sizeList.isNotEmpty)
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _isSave = true;
+                          });
+                        },
+                        child: Text(
+                          _isSave ? 'Saved' : 'Save',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 3,
+                          ),
+                        ),
+                      ),
+                    SizedBox(height: 32),
+                    Container(
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        itemCount: images.length + 1,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 15,
+                          childAspectRatio: 1,
+                        ),
+                        itemBuilder: ((context, index) {
+                          return index == 0
+                              ? Center(
+                                  child: _isRemovingBackground
+                                      ? CircularProgressIndicator()
+                                      : IconButton(
+                                          onPressed: pickImage,
+                                          icon: Icon(Icons.add),
+                                        ),
+                                )
+                              : Image.memory(
+                                  images[index - 1],
+                                  fit: BoxFit.cover,
+                                );
+                        }),
                       ),
                     ),
-                    child: _isUploading
-                        ? CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : Text(
-                            'Upload Product',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                    SizedBox(height: 32),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await uploadData();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Fields must not be empty')));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: _isUploading
+                          ? CircularProgressIndicator(
                               color: Colors.white,
+                            )
+                          : Text(
+                              'Upload Product',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -612,30 +616,32 @@ uploadData() async {
   }
 
   Widget buildDropdownField(String labelText) {
-    return DropdownButtonFormField(
-      value: _selectedCategory,
-      onChanged: (String? value) {
-        if (value != null) {
-          setState(() {
-            _selectedCategory = value;
-          });
-        }
-      },
-      items: _categoryList.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      decoration: InputDecoration(
-        labelText: labelText,
-        filled: true,
-        fillColor: Colors.grey[200],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide.none,
+    return Expanded(
+      child: DropdownButtonFormField(
+        value: _selectedCategory,
+        onChanged: (String? value) {
+          if (value != null) {
+            setState(() {
+              _selectedCategory = value;
+            });
+          }
+        },
+        items: _categoryList.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        decoration: InputDecoration(
+          labelText: labelText,
+          filled: true,
+          fillColor: Colors.grey[200],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       ),
     );
   }
